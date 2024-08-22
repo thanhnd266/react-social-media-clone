@@ -1,5 +1,6 @@
 import { Grid, Box } from '@mui/material';
 import React, { useEffect, useState } from 'react';
+import { FaBookOpen, FaHeadphones, FaHome, FaRegNewspaper, FaUsers } from 'react-icons/fa';
 import { useLocation, Route, Routes } from 'react-router-dom';
 import i18n from '@base/i18n';
 import { useAppDispatch, useAppSelector } from '@base/store';
@@ -151,7 +152,30 @@ function App() {
       >
         {isLoading ? <Loading /> : null}
         {isLoggedIn && location.pathname !== PageURLs.SIGN_IN ? <Topbar /> : null}
-
+        <div className="LPXAHPAYYQ">
+          <div className="MZFEQFTBGW">
+            <div className="EQZDUPSYOO">
+              <FaHome width={30} height={30} />
+              Trang chủ
+            </div>
+            <div className="EQZDUPSYOO">
+              <FaUsers width={30} height={30} />
+              Cộng đồng
+            </div>
+            <div className="EQZDUPSYOO">
+              <FaBookOpen width={30} height={30}/>
+              Đào tạo
+            </div>
+            <div className="EQZDUPSYOO">
+              <FaHeadphones width={30} height={30} />
+              Tư vấn
+            </div>
+            <div className="EQZDUPSYOO">
+              <FaRegNewspaper width={30} height={30} />
+              Tin tức
+            </div>
+          </div>
+        </div>
         <Routes>
           <Route
             path={PageURLs.HOME}

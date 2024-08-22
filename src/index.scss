@@ -17,3 +17,40 @@
 .app-container {
   min-height: 100vh;
 }
+
+.LPXAHPAYYQ {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .MZFEQFTBGW {
+    width: 930px;
+    padding-top: 24px;
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+
+    .EQZDUPSYOO {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease-in-out;
+      border-radius: 8px;
+      box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+      width: 120px;
+      height: 120px;
+
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+
+      &:hover {
+        background-color: #DDF8DE;
+      }
+    }
+  }
+}
