@@ -1,7 +1,7 @@
 import { Grid, Box } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { FaBookOpen, FaHeadphones, FaHome, FaRegNewspaper, FaUsers } from 'react-icons/fa';
-import { useLocation, Route, Routes } from 'react-router-dom';
+import { useLocation, Route, Routes, useNavigate } from 'react-router-dom';
 import i18n from '@base/i18n';
 import { useAppDispatch, useAppSelector } from '@base/store';
 import Alert from '@components/shared/Alert';
@@ -31,6 +31,7 @@ import Profile from '@pages/Profile';
 import WildCard from '@pages/WildCard';
 
 function App() {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const isLoggedIn = useAppSelector(selectIsLoggedIn);
   const alerts = useAppSelector(selectAlerts);
@@ -154,23 +155,23 @@ function App() {
         {isLoggedIn && location.pathname !== PageURLs.SIGN_IN ? <Topbar /> : null}
         <div className="LPXAHPAYYQ">
           <div className="MZFEQFTBGW">
-            <div className="EQZDUPSYOO">
+            <div className="EQZDUPSYOO" onClick={() => navigate("/")}>
               <FaHome width={30} height={30} />
               Trang chủ
             </div>
-            <div className="EQZDUPSYOO">
+            <div className="EQZDUPSYOO" onClick={() => navigate("/cong-dong")}>
               <FaUsers width={30} height={30} />
               Cộng đồng
             </div>
-            <div className="EQZDUPSYOO">
+            <div className="EQZDUPSYOO" onClick={() => navigate("/dao-tao")}>
               <FaBookOpen width={30} height={30}/>
               Đào tạo
             </div>
-            <div className="EQZDUPSYOO">
+            <div className="EQZDUPSYOO" onClick={() => navigate("/tu-van")}>
               <FaHeadphones width={30} height={30} />
               Tư vấn
             </div>
-            <div className="EQZDUPSYOO">
+            <div className="EQZDUPSYOO" onClick={() => navigate("/news")}>
               <FaRegNewspaper width={30} height={30} />
               Tin tức
             </div>
