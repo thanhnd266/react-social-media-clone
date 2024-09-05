@@ -31,7 +31,6 @@ export default function ProfileSettingsPopover() {
 
   const logout = () => {
     dispatch(setIsUserLoggedIn(false));
-
     navigate(PageURLs.SIGN_IN);
   };
 

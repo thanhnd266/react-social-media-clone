@@ -33,7 +33,8 @@ import WildCard from '@pages/WildCard';
 function App() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const isLoggedIn = useAppSelector(selectIsLoggedIn);
+  // const isLoggedIn = useAppSelector(selectIsLoggedIn);
+  const isLoggedIn = true;
   const alerts = useAppSelector(selectAlerts);
   const isLoading = useAppSelector(selectIsLoading);
   const closeFriends = useAppSelector(selectCloseFriends);
@@ -153,30 +154,32 @@ function App() {
       >
         {isLoading ? <Loading /> : null}
         {isLoggedIn && location.pathname !== PageURLs.SIGN_IN ? <Topbar /> : null}
-        <div className="LPXAHPAYYQ">
-          <div className="MZFEQFTBGW">
-            <div className="EQZDUPSYOO" onClick={() => navigate("/")}>
-              <FaHome width={30} height={30} />
-              Trang chủ
-            </div>
-            <div className="EQZDUPSYOO" onClick={() => navigate("/cong-dong")}>
-              <FaUsers width={30} height={30} />
-              Cộng đồng
-            </div>
-            <div className="EQZDUPSYOO" onClick={() => navigate("/dao-tao")}>
-              <FaBookOpen width={30} height={30}/>
-              Đào tạo
-            </div>
-            <div className="EQZDUPSYOO" onClick={() => navigate("/tu-van")}>
-              <FaHeadphones width={30} height={30} />
-              Tư vấn
-            </div>
-            <div className="EQZDUPSYOO" onClick={() => navigate("/news")}>
-              <FaRegNewspaper width={30} height={30} />
-              Tin tức
+        {location.pathname === "/" && (
+          <div className="LPXAHPAYYQ">
+            <div className="MZFEQFTBGW">
+              <div className="EQZDUPSYOO" onClick={() => navigate("/")}>
+                <FaHome width={30} height={30} />
+                Trang chủ
+              </div>
+              <div className="EQZDUPSYOO" onClick={() => navigate("/cong-dong")}>
+                <FaUsers width={30} height={30} />
+                Cộng đồng
+              </div>
+              <div className="EQZDUPSYOO" onClick={() => navigate("/dao-tao")}>
+                <FaBookOpen width={30} height={30}/>
+                Đào tạo
+              </div>
+              <div className="EQZDUPSYOO" onClick={() => navigate("/tu-van")}>
+                <FaHeadphones width={30} height={30} />
+                Tư vấn
+              </div>
+              <div className="EQZDUPSYOO" onClick={() => navigate("/news")}>
+                <FaRegNewspaper width={30} height={30} />
+                Tin tức
+              </div>
             </div>
           </div>
-        </div>
+        )}
         <Routes>
           <Route
             path={PageURLs.HOME}

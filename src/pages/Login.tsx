@@ -31,6 +31,9 @@ import {
   atLeastOneNumber,
   atLeastOneSpecialCharacter,
 } from '@helpers/utils/validationFunctions';
+import axios from 'axios';
+import Cookies from 'js-cookie';
+import { Button, Checkbox, Form, Input } from 'antd';
 
 export default function Login() {
   const { t } = useTranslation();
@@ -40,6 +43,32 @@ export default function Login() {
   const lastVisitedURL = useAppSelector(selecLastVisitedURL);
   const isLoading = useAppSelector(selectIsLoading);
   const navigate = useNavigate();
+
+  const onFinish = async (values: any) => {
+    try {
+      const res = await axios.post("https://api-dev.dsc.com.vn/a/auth/external/token", {
+        "userName": "0966211059",
+        "password": "Dsc@2024",
+        "scopes": "openid",
+        "type": "PASSWORD",
+        "domain": "DSC-CUSTOMER"
+      });
+      if(res?.data?.code === "0") {
+        Cookies.set('access_token', res?.data?.data?.access_token);
+        Cookies.set('refresh_token', res?.data?.data?.refresh_token);
+        dispatch(setIsUserLoggedIn(true));
+        navigate("/");
+      }
+    } catch(err) {
+      console.log(err);
+    }
+
+
+  };
+
+  const onFinishFailed = (errorInfo: any) => {
+    console.log('Failed:', errorInfo);
+  };
 
   const validationSchema = Yup.object().shape({
     email: Yup.string()
@@ -139,10 +168,6 @@ export default function Login() {
 
   const isDisabled = isLoading || !formik.dirty || !formik.isValid;
 
-  useEffect(() => {
-    sessionStorageUtil.remove(Common.TOKEN);
-  }, []);
-
   return (
     <Box
       display="flex"
@@ -150,11 +175,10 @@ export default function Login() {
       justifyContent="center"
       className="w-screen h-screen items-center justify-center bg-gradient-to-tl from-green-700 to-blue-900 landscape:h-[55%] landscape:lg:h-[100vh] landscape:md:h-[55%]"
     >
-      <form
+      <div
         className={`${
           isMobile ? 'w-[90vw] h-fit' : 'w-[40vw]'
         } shadow-card p-[4rem] sm:p-[2rem] md:w-[65vw] md:h-[55vh] bg-gray-200 landscape:h-[55%] landscape:lg:h-[75vh] landscape:md:h-[55%]`}
-        onSubmit={formik.handleSubmit}
       >
         <Box
           display="flex"
@@ -163,84 +187,74 @@ export default function Login() {
           className="w-full"
         >
           <h1 className="text-2xl font-bold py-5">{t('pages.login.welcome')}</h1>
-          <Box
-            display="flex"
-            justifyContent="center"
-            flexDirection="column"
-            className="justify-center flex-col py-2.5 w-full"
+          <Form
+            name="basic"
+            labelCol={{
+              span: 8,
+            }}
+            wrapperCol={{
+              span: 16,
+            }}
+            style={{
+              maxWidth: 600,
+            }}
+            initialValues={{
+              remember: true,
+            }}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            autoComplete="off"
           >
-            <FormInput
-              id={SignInPageFields.EMAIL}
-              type={SignInPageFields.EMAIL}
-              name={SignInPageFields.EMAIL}
-              value={formik.values.email}
-              placeHolder={PlaceHolders.EMAIL}
-              label={t('pages.login.email')}
-              helperText={formik.errors.email ? formik.errors.email : ''}
-              onChange={formik.handleChange}
-              tooltip={{ icon: <InfoIcon fontSize="small" />, text: t('components.tooltip.email') }}
-            ></FormInput>
-          </Box>
-
-          <Box className="flex align-center justify-center flex-col py-2.5 w-full">
-            <FormInput
-              id={SignInPageFields.PASSWORD}
-              type={SignInPageFields.PASSWORD}
-              name={SignInPageFields.PASSWORD}
-              value={formik.values.password}
-              placeHolder={PlaceHolders.PASSWORD}
-              label={t('pages.login.password')}
-              helperText={formik.errors.password ? formik.errors.password : ''}
-              onChange={formik.handleChange}
-              tooltip={{ icon: <InfoIcon fontSize="small" />, text: t('components.tooltip.password') }}
-            ></FormInput>
-          </Box>
-
-          <Box className="flex align-start justify-center w-auto">
-            {loginError && <p className="text-red-500">{loginError}</p>}
-
-            <button
-              className={`group relative h-12 w-auto !overflow-hidden !rounded-lg !bg-white !text-lg shadow !mt-6 !px-6 select-none ${
-                isDisabled ? 'opacity-50 !bg-gray' : ''
-              }`}
-              aria-label={t('button.signIn')}
-              type={Types.SUBMIT}
-              disabled={isDisabled}
+            <Form.Item
+              label="Username"
+              name="username"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input your username!',
+                },
+              ]}
             >
-              {!isDisabled ? (
-                <div className="absolute inset-0 w-3 bg-blue-500 transition-all duration-[250ms] ease-out group-hover:w-full"></div>
-              ) : null}
+              <Input />
+            </Form.Item>
 
-              <p className={`relative text-black ${!isDisabled ? 'group-hover:text-white' : ''}`}>{t('button.signIn')}</p>
-            </button>
-          </Box>
+            <Form.Item
+              label="Password"
+              name="password"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input your password!',
+                },
+              ]}
+            >
+              <Input.Password />
+            </Form.Item>
 
-          <Box className="flex flex-column items-center m-5">
-            <div className="flex-[4] border-gray-400 border h-[2px]"></div>
-
-            <div className="flex[2] mx-5">{t('pages.login.or')}</div>
-
-            <div className="flex-[4] border-gray-400 border h-[2px]"></div>
-          </Box>
-
-          <Box className="flex flex-row justify-evenly">
-            <GoogleLogin
-              onSuccess={(credentialResponse: CredentialResponse) => {
-                if (credentialResponse) {
-                  const jwtDecodedResponse: DecodedGoogleCredentialResponse = jwt_decode(credentialResponse.credential as string);
-
-                  sessionStorageUtil.set(Common.TOKEN, jwtDecodedResponse.jti);
-
-                  dispatch(setGoogleAPIDetails(jwtDecodedResponse));
-                  dispatch(setIsUserLoggedIn(true));
-
-                  navigate(lastVisitedURL);
-                }
+            <Form.Item
+              name="remember"
+              valuePropName="checked"
+              wrapperCol={{
+                offset: 8,
+                span: 16,
               }}
-            />
-          </Box>
+            >
+              <Checkbox>Remember me</Checkbox>
+            </Form.Item>
+
+            <Form.Item
+              wrapperCol={{
+                offset: 8,
+                span: 16,
+              }}
+            >
+              <Button type="primary" htmlType="submit">
+                Submit
+              </Button>
+            </Form.Item>
+          </Form>
         </Box>
-      </form>
+      </div>
     </Box>
   );
 }
