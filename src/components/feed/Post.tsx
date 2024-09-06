@@ -2,6 +2,7 @@ import { MoreVert } from '@mui/icons-material';
 import { Box } from '@mui/material';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import moment from "moment";
 
 interface PostProps {
   post: any;
@@ -30,7 +31,7 @@ export default function PostCard({ post, index }: PostProps) {
           <figcaption className="text-base font-bold my-0 mx-2.5 flex items-center">{`${post?.user?.displayname}`}</figcaption>
 
           <time className="text-zinc-500	text-xs flex items-center">
-            {moment}
+            {moment().format("DD/MM/YYYY")}
           </time>
         </Box>
 
@@ -41,12 +42,12 @@ export default function PostCard({ post, index }: PostProps) {
         mx={0}
         my={5}
       >
-        <figcaption>{text}</figcaption>
+        <figcaption>{post.title}</figcaption>
 
-        {image ? (
+        {post.image ? (
           <img
             loading={`${index === 0 ? 'eager' : 'lazy'}`}
-            src={image}
+            src={post.image}
             width="100%"
             height="100%"
             aria-label={t('a11y.postImage')}
@@ -79,12 +80,12 @@ export default function PostCard({ post, index }: PostProps) {
           />
 
           <p className="text-sm">
-            {likes} <u>{t('components.post.people')}</u> {t('components.post.likeThis')}
+            {post.upvotes} <u>{t('components.post.people')}</u> {t('components.post.likeThis')}
           </p>
         </Box>
 
         <p className="cursor-pointer text-sm">
-          {likes} {t('components.post.comments')}
+          {post.upvotes} {t('components.post.comments')}
         </p>
       </Box>
     </Box>
