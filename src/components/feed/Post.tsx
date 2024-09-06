@@ -1,25 +1,15 @@
 import { MoreVert } from '@mui/icons-material';
 import { Box } from '@mui/material';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useAppSelector } from '@base/store';
-import { Languages, Locales } from '@helpers/enums/enums';
-import { selectLanguage } from '@helpers/selectors/appSelector';
-import { RandomPost } from '@helpers/types/api';
 
 interface PostProps {
-  post: RandomPost;
+  post: any;
   index: number;
 }
 
 export default function PostCard({ post, index }: PostProps) {
   const { t } = useTranslation();
-  const { image, likes, text, publishDate, owner } = post;
-  const selectedLanguage = useAppSelector(selectLanguage) || Languages.EN;
-  const locale = useMemo(() => {
-    return selectedLanguage === Languages.EN ? Locales.EN : Locales.TR;
-  }, [selectedLanguage]);
-
   return (
     <Box
       p={3}
@@ -29,19 +19,18 @@ export default function PostCard({ post, index }: PostProps) {
         <Box className="flex align-center">
           <img
             loading={`${index === 0 ? 'eager' : 'lazy'}`}
-            src={owner.picture}
+            src={"https://static.vecteezy.com/system/resources/previews/013/042/571/original/default-avatar-profile-icon-social-media-user-photo-in-flat-style-vector.jpg"}
             referrerPolicy="no-referrer"
             width="100%"
             height="100%"
-            aria-label={`${t('a11y.postOwnerImage')}-${owner.firstName} ${owner.lastName}`}
             className="w-9 h-9 rounded-full object-cover"
-            alt={`${t('a11y.postOwnerImage')}-${owner.firstName} ${owner.lastName}`}
+            alt={`${t('a11y.postOwnerImage')}-${post?.user?.displayname} ${post?.uid}`}
           />
 
-          <figcaption className="text-base font-bold my-0 mx-2.5 flex items-center">{`${owner.firstName} ${owner.lastName}`}</figcaption>
+          <figcaption className="text-base font-bold my-0 mx-2.5 flex items-center">{`${post?.user?.displayname}`}</figcaption>
 
           <time className="text-zinc-500	text-xs flex items-center">
-            {new Date(publishDate).toLocaleString(locale, { timeZone: 'UTC' })}
+            {moment}
           </time>
         </Box>
 

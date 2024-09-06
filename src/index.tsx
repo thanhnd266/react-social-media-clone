@@ -37,7 +37,7 @@ root.render(
         <Suspense fallback={<Loading />}>
           <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID as string}>
             <App />
-            <Analytics />
+            {/* <Analytics /> */}
             <SpeedInsights />
           </GoogleOAuthProvider>
         </Suspense>
